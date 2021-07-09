@@ -40,3 +40,4 @@ source ~/.config/nvim/plug-config/vim-nerdtree-sync.vim
 source ~/.config/nvim/plug-config/coc.vim
 source ~/.config/nvim/plug-config/nerdcommenter.vim
 source ~/.config/nvim/plug-config/fzf.vim
+source ~/.config/nvim/plug-config/vim-tmux-navigator.vim
