@@ -19,3 +19,7 @@ eval "$(pyenv virtualenv-init -)"
   # Set Spaceship ZSH as a prompt
   autoload -U promptinit; promptinit
   prompt spaceship
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+export PATH="/usr/local/opt/bzip2/bin:$PATH"
+
+export PATH="$HOME/.poetry/bin:$PATH"
