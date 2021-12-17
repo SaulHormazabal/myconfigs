@@ -1,0 +1,40 @@
+# /Users/saulhormazabal/.tmuxinator/managermas-core.yml
+
+name: transelec-gopro
+root: ~/Workspace/transelec/transelec-gopro
+
+
+startup_window: backend
+
+
+windows:
+  - main:
+      layout: main-vertical
+      panes:
+        - nvim README.md
+        - 
+
+  - backend:
+      layout: f311,272x67,0,0{174x67,0,0,11,97x67,175,0[97x16,175,0,17,97x16,175,17,20,97x16,175,34,18,97x16,175,51,21]}
+      root: ~/Workspace/transelec/transelec-gopro/backend
+      panes:
+        - poetry run nvim
+        - poetry run python manage.py runserver 0.0.0.0:8002
+        - poetry run python manage.py shell_plus
+        - poetry shell 
+
+  - frontend:
+      layout: f311,272x67,0,0{174x67,0,0,11,97x67,175,0[97x16,175,0,17,97x16,175,17,20,97x16,175,34,18,97x16,175,51,21]}
+      root: ~/Workspace/transelec/transelec-gopro/frontend
+      pre: export NPM_TOKEN=3zp8R-2NLN6HHz9D3BpjPchqlJysULSU
+      panes:
+        - nvim
+        - yarn start
+        - yarn test
+        - 
+
+  - tmuxinator:
+      layout: f589,270x69,0,0{173x69,0,0,29,96x69,174,0,35}
+      panes:
+        - tmuxinator edit transelec-gopro
+        -

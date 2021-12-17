@@ -1,0 +1,59 @@
+# /Users/saul/.config/tmuxinator/transelec-services.yml
+
+name: transelec-services
+root: ~/Workspace/transelec/
+
+# Instalación
+#
+# docker volume create transelec-postgres
+# docker container create --name transelec-postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -v transelec-postgres:/var/lib/postgresql/data postgres
+# docker container create --name transelec-redis redis
+
+# Run on project start, after the first time
+on_project_start:
+  - docker container start transelec-postgres
+  - docker container start transelec-redis
+  # - docker container start transelec-elasticsearch
+  # - docker container start transelec-rabbit
+
+# Run on project stop
+on_project_stop:
+  - docker container stop transelec-postgres
+  - docker container stop transelec-redis
+  # - docker container stop transelec-elasticsearch
+  # - docker container stop transelec-rabbit
+
+windows:
+  - postgres:
+      layout: 9e0a,270x69,0,0{173x69,0,0,16,96x69,174,0[96x34,174,0,20,96x34,174,35,25]}
+      panes:
+        - docker container logs --tail 100 --follow transelec-postgres
+        - pgcli postgres://postgres:password@localhost:5432/postgres
+        - 
+
+  - redis:
+      layout: 9e0a,270x69,0,0{173x69,0,0,16,96x69,174,0[96x34,174,0,20,96x34,174,35,25]}
+      panes:
+        - docker container logs --tail 100 --follow transelec-redis
+        - docker container exec -it transelec-redis redis-cli
+        - 
+
+  # - elasticsearch:
+  #     layout: 9e0a,270x69,0,0{173x69,0,0,16,96x69,174,0[96x34,174,0,20,96x34,174,35,25]}
+  #     panes:
+  #       - docker container logs --tail 100 --follow transelec-elasticsearch
+  #       - 
+  #       - 
+
+  # - rabbit:
+  #     layout: 9e0a,270x69,0,0{173x69,0,0,16,96x69,174,0[96x34,174,0,20,96x34,174,35,25]}
+  #     panes:
+  #       - docker container logs --tail 100 --follow transelec-rabbit
+  #       - 
+  #      - 
+
+  - tmuxinator:
+      layout: f589,270x69,0,0{173x69,0,0,29,96x69,174,0,35}
+      panes:
+        - tmuxinator edit transelec-services
+        -

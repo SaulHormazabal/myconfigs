@@ -1,0 +1,32 @@
+# /Users/saulhormazabal/.tmuxinator/reporteria-airflow.yml
+
+name: transelec-reporteria-servers
+root: ~/
+
+windows:
+  - prod:
+      layout: main-vertical
+      pre:
+        - export HOST=10.80.22.104
+        - export USER=atprd-adm
+        - export AIRFLOW_PORT=9090
+      panes:
+        - ssh -J pivote ${USER}@${HOST}
+        - ssh -J pivote -NT -L ${AIRFLOW_PORT}:${HOST}:8080 ${USER}@${HOST}
+        - # ssh -NT -L ${AIRFLOW_PORT}:127.0.0.1:${AIRFLOW_PORT} pivote
+  - qa:
+      layout: main-vertical
+      pre:
+        - export HOST=10.80.11.68
+        - export USER=atqa-adm
+        - export AIRFLOW_PORT=9091
+      panes:
+        - ssh -J pivote ${USER}@${HOST}
+        - ssh -J pivote -NT -L ${AIRFLOW_PORT}:${HOST}:8080 ${USER}@${HOST}
+        - # ssh -NT -L ${AIRFLOW_PORT}:127.0.0.1:${AIRFLOW_PORT} pivote
+  - tmuxinator:
+      layout: main-vertical
+      panes:
+        - tmuxinator edit transelec-reporteria-servers
+        -
+
