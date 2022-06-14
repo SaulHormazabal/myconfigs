@@ -1,26 +1,38 @@
-# /Users/saul/.config/tmuxinator/reporteria-airflow.yml
-
 name: transelec-servers
 root: ~/
+
+
+# Configuración
+#
+# ssh-copy-id pivote
+# ssh-copy-id -o ProxyJump=pivote atqa-adm@10.80.32.31
+# ssh-copy-id -o ProxyJump=pivote atqa-adm@10.80.11.47
+# ssh-copy-id -o ProxyJump=pivote atqa-adm@10.80.11.48
+# ssh-copy-id -o ProxyJump=pivote atprd-adm@10.80.32.32
+# ssh-copy-id -o ProxyJump=pivote atprd-adm@10.80.22.54
+# ssh-copy-id -o ProxyJump=pivote atprd-adm@10.80.22.127
+# ssh-copy-id -o ProxyJump=pivote gopro-admin@10.80.32.44
+# ssh-copy-id -o ProxyJump=pivote gopro-admin@10.80.32.45
+# ssh-copy-id -o ProxyJump=pivote atprd-adm@10.80.32.47
+# ssh-copy-id -o ProxyJump=pivote sso-admin@10.80.32.42
+# ssh-copy-id -o ProxyJump=pivote atqa-adm@10.80.11.68
+# ssh-copy-id -o ProxyJump=pivote atprd-adm@10.80.22.104
+
 
 windows:
   - go-stg:
       layout: main-vertical
-      pre:
-        - export USER=atqa-adm
       panes:
-        - ssh -J pivote ${USER}@10.80.32.31
-        - ssh -J pivote ${USER}@10.80.11.47
-        - ssh -J pivote ${USER}@10.80.11.48
+        - ssh -J pivote atqa-adm@10.80.32.31
+        - ssh -J pivote atqa-adm@10.80.11.47
+        - ssh -J pivote atqa-adm@10.80.11.48
 
   - go-prd:
       layout: main-vertical
-      pre:
-        - export USER=atprd-adm
       panes:
-        - ssh -J pivote ${USER}@10.80.32.32
-        - ssh -J pivote ${USER}@10.80.22.54
-        - ssh -J pivote ${USER}@10.80.22.127
+        - ssh -J pivote atprd-adm@10.80.32.32
+        - ssh -J pivote atprd-adm@10.80.22.54
+        - ssh -J pivote atprd-adm@10.80.22.127
 
   - gopro-stg:
       - ssh -J pivote gopro-admin@10.80.32.44

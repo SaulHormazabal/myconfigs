@@ -4,3 +4,5 @@ map <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 
 let NERDTreeShowHidden = 1
+
+autocmd BufWritePost * NERDTreeFocus | execute 'normal R' | wincmd p
