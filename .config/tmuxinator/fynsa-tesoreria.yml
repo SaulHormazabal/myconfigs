@@ -1,0 +1,71 @@
+name: fynsa-tesoreria
+root: ~/Workspace/Fynsa/
+
+
+# Instalación
+#
+# docker volume create fynsa-postgres
+# docker container create --name fynsa-postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -v fynsa-postgres:/var/lib/postgresql/data postgres
+
+# Configuraci√≥n
+#
+# ssh-copy-id pivote
+# ssh-copy-id -o ProxyJump=pivote fynsa@200.32.180.43
+
+
+on_project_start:
+  - docker-compose -f fynsa-tesoreria-backend/docker-compose.dev.yml up -d
+  # - docker container start fynsa-postgres
+
+on_project_stop:
+  - docker-compose -f fynsa-tesoreria-backend/docker-compose.dev.yml down
+  # - docker container stop fynsa-postgres
+
+
+startup_window: backend
+
+
+windows:
+  - backend:
+      layout: f311,272x67,0,0{174x67,0,0,11,97x67,175,0[97x16,175,0,17,97x16,175,17,20,97x16,175,34,18,97x16,175,51,21]}
+      root: ~/Workspace/Fynsa/fynsa-tesoreria-backend
+      pre:
+        - export DJANGO_SETTINGS_MODULE=fynsa_tesoreria.conf.develop.settings
+      panes:
+        - pdm run nvim
+        - pdm run python manage.py runserver 0.0.0.0:8010
+        - pdm run python manage.py shell_plus
+        - 
+
+  - frontend:
+      layout: f311,272x67,0,0{174x67,0,0,11,97x67,175,0[97x16,175,0,17,97x16,175,17,20,97x16,175,34,18,97x16,175,51,21]}
+      root: ~/Workspace/Fynsa/fynsa-tesoreria-frontend
+      panes:
+        - nvim
+        - PORT=3010 yarn start
+        - yarn test
+        - 
+
+  - siga:
+      layout: f311,272x67,0,0{174x67,0,0,11,97x67,175,0[97x16,175,0,17,97x16,175,17,20,97x16,175,34,18,97x16,175,51,21]}
+      root: ~/Workspace/Fynsa/fynsa-siga
+      panes:
+        - nvim
+        - 
+        - 
+        - 
+
+  - postgres:
+      layout: 9e0a,270x69,0,0{173x69,0,0,16,96x69,174,0[96x34,174,0,20,96x34,174,35,25]}
+      panes:
+        - docker compose -f fynsa-tesoreria-backend/docker-compose.dev.yml logs postgres -f
+        - pgcli postgres://postgres:password@localhost:5410/postgres
+        - 
+
+  - server: ssh -J pivote fynsa@200.32.180.43
+
+  - tmuxinator:
+      layout: f589,270x69,0,0{173x69,0,0,29,96x69,174,0,35}
+      panes:
+        - tmuxinator edit fynsa-tesoreria
+        - 

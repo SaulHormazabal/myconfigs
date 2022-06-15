@@ -1,0 +1,39 @@
+# /Users/saul/.config/tmuxinator/intelectrica-services.yml
+
+name: intelectrica-services
+root: ~/Workspace/intelectrica/
+
+# Instalación
+#
+# docker volume create intelectrica-postgres
+# docker container create --name intelectrica-postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -v intelectrica-postgres:/var/lib/postgresql/data postgres
+# docker container create --name intelectrica-redis redis
+
+on_project_start:
+  - docker container start intelectrica-postgres
+  - docker container start intelectrica-redis
+
+on_project_stop:
+  - docker container stop intelectrica-postgres
+  - docker container stop intelectrica-redis
+
+windows:
+  - postgres:
+      layout: 9e0a,270x69,0,0{173x69,0,0,16,96x69,174,0[96x34,174,0,20,96x34,174,35,25]}
+      panes:
+        - docker container logs --tail 100 --follow intelectrica-postgres
+        - pgcli postgres://postgres:password@localhost:5432/postgres
+        - 
+
+  - redis:
+      layout: 9e0a,270x69,0,0{173x69,0,0,16,96x69,174,0[96x34,174,0,20,96x34,174,35,25]}
+      panes:
+        - docker container logs --tail 100 --follow intelectrica-redis
+        - docker container exec -it intelectrica-redis redis-cli
+        - 
+
+  - tmuxinator:
+      layout: f589,270x69,0,0{173x69,0,0,29,96x69,174,0,35}
+      panes:
+        - tmuxinator edit intelectrica-services
+        -

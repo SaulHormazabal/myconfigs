@@ -1,0 +1,28 @@
+# /Users/saulhormazabal/.config/tmuxinator/arauco-servers.yml
+
+name: arauco-servers
+root: ~/
+
+# Configuración
+#
+# ssh-copy-id santiago@10.192.215.51
+# ssh-copy-id santiago@10.192.215.52
+# ssh-copy-id santiago@10.192.220.13
+# ssh-copy-id santiago@10.192.220.186
+
+windows:
+  - staging:
+      panes:
+        - ssh santiago@10.192.215.51
+        - ssh santiago@10.192.215.52
+
+  - production:
+      panes:
+        - ssh santiago@10.192.220.13
+        - ssh santiago@10.192.220.186
+
+  - tmuxinator:
+      layout: f589,270x69,0,0{173x69,0,0,29,96x69,174,0,35}
+      panes:
+        - tmuxinator edit arauco-servers
+        - 

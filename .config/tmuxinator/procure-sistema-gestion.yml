@@ -1,0 +1,74 @@
+name: procure-sistema-gestion
+root: ~/Workspace/Procure/
+
+
+# Instalación
+#
+# docker volume create procure-postgres
+# docker container create --name procure-postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -v procure-postgres:/var/lib/postgresql/data postgres
+# docker volume create procure-mariadb
+# docker container create --name procure-mariadb -p 3306:3306 -e MARIADB_USER=mariadb -e MARIADB_DATABASE=procureescritorio -e MARIADB_PASSWORD=password -e MARIADB_ROOT_PASSWORD=password mariadb
+
+
+on_project_start:
+  - docker-compose -f procure-sistema-gestion-backend/docker-compose.dev.yml up -d
+  # - docker container start procure-postgres
+  # - docker container start procure-mariadb
+
+on_project_stop:
+  - docker-compose -f procure-sistema-gestion-backend/docker-compose.dev.yml down
+  # - docker container stop procure-postgres
+  # - docker container stop procure-mariadb
+
+startup_window: backend
+
+
+windows:
+  - backend:
+      layout: f311,272x67,0,0{174x67,0,0,11,97x67,175,0[97x16,175,0,17,97x16,175,17,20,97x16,175,34,18,97x16,175,51,21]}
+      root: ~/Workspace/Procure/procure-sistema-gestion-backend
+      pre:
+        - export DJANGO_SETTINGS_MODULE=procure.conf.develop.settings
+      panes:
+        - pdm run nvim
+        - pdm run python manage.py runserver 0.0.0.0:8020
+        - pdm run python manage.py shell_plus
+        - 
+
+  - frontend:
+      layout: f311,272x67,0,0{174x67,0,0,11,97x67,175,0[97x16,175,0,17,97x16,175,17,20,97x16,175,34,18,97x16,175,51,21]}
+      root: ~/Workspace/Procure/procure-sistema-gestion-frontend
+      panes:
+        - nvim
+        - PORT=3020 yarn start
+        - yarn test
+        - 
+
+  - nginx:
+      layout: f311,272x67,0,0{174x67,0,0,11,97x67,175,0[97x16,175,0,17,97x16,175,17,20,97x16,175,34,18,97x16,175,51,21]}
+      root: ~/Workspace/Procure/procure-sistema-gestion-nginx
+      panes:
+        - nvim
+        - 
+        - 
+        - 
+
+  - postgres:
+      layout: 9e0a,270x69,0,0{173x69,0,0,16,96x69,174,0[96x34,174,0,20,96x34,174,35,25]}
+      panes:
+        - docker container logs --tail 100 --follow procure-postgres
+        - pgcli postgres://postgres:password@localhost:5420/postgres
+        - 
+
+  - mariadb:
+      layout: 9e0a,270x69,0,0{173x69,0,0,16,96x69,174,0[96x34,174,0,20,96x34,174,35,25]}
+      panes:
+        - docker container logs --tail 100 --follow procure-mariadb
+        - docker exec -it procure-mariadb mysql -p"password" -d procureescritorio
+        - 
+
+  - tmuxinator:
+      layout: f589,270x69,0,0{173x69,0,0,29,96x69,174,0,35}
+      panes:
+        - nvim ~/.config/tmuxinator/procure-sistema-gestion.yml
+        - 
